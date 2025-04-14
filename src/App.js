@@ -1,26 +1,30 @@
-import { useState } from 'react';
-import './App.css';
+import React, { useState } from 'react';
 import ExpenseForm from './components/ExpenseForm';
 import ExpenseList from './components/ExpenseList';
+import "./App.css"
 
 function App() {
   const [expenses, setExpenses] = useState([]);
+  const [search, setSearch] = useState('');
 
   const addExpense = (expense) => {
     setExpenses([...expenses, expense]);
   };
 
+  
+  const filteredExpenses = expenses.filter(
+    (expense) =>
+      expense.title.toLowerCase().includes(search.toLowerCase()) ||
+      expense.description.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="App">
       <h1>Expense Tracker</h1>
-      <p>Start taking control of your finances and life .Record,
-      </p>
-      <p>categorize and analyze your spending</p>
-      <ExpenseForm onAddExpense={addExpense} />
-      <ExpenseList expenses={expenses} />
+      <ExpenseForm onAddExpense={addExpense} setSearch={setSearch} />
+      <ExpenseList expenses={filteredExpenses} />
     </div>
   );
 }
-
 
 export default App;
